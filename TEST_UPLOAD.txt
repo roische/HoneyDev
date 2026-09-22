@@ -1,0 +1,2 @@
+Temporary test file for git upload verification.
+Created by Cursor Cloud Agent.
