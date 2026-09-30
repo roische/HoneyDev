@@ -1,10 +1,13 @@
 import { useMemo, useState } from "react";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:4000";
+const defaultTableName = import.meta.env.VITE_DEFAULT_TABLE_NAME || "profiles";
+const defaultLimit = Number.parseInt(import.meta.env.VITE_DEFAULT_LIMIT, 10) || 10;
 
 export default function App() {
   const [health, setHealth] = useState(null);
-  const [tableName, setTableName] = useState("profiles");
+  const [tableName, setTableName] = useState(defaultTableName);
+  const [limit, setLimit] = useState(defaultLimit);
   const [rowsResult, setRowsResult] = useState(null);
   const [error, setError] = useState("");
 
@@ -27,8 +30,9 @@ export default function App() {
   const fetchRows = async () => {
     setError("");
     try {
+      const safeLimit = Math.min(Math.max(limit || 10, 1), 100);
       const response = await fetch(
-        `${apiBaseUrl}/api/table/${encodeURIComponent(tableName)}?limit=10`
+        `${apiBaseUrl}/api/table/${encodeURIComponent(tableName)}?limit=${safeLimit}`
       );
       const json = await response.json();
       if (!response.ok) {
@@ -59,8 +63,19 @@ export default function App() {
             onChange={(event) => setTableName(event.target.value)}
             placeholder="profiles"
           />
+          <input
+            type="number"
+            min={1}
+            max={100}
+            value={limit}
+            onChange={(event) =>
+              setLimit(Number.parseInt(event.target.value, 10) || 10)
+            }
+            placeholder="10"
+          />
           <button onClick={fetchRows}>Fetch Rows</button>
         </div>
+        <p className="hint">Limit은 1~100 사이로 자동 보정됩니다.</p>
         {prettyRows && <pre>{prettyRows}</pre>}
       </section>
 

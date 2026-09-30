@@ -23,6 +23,8 @@ npm run dev
 
 ```env
 VITE_API_BASE_URL=http://localhost:4000
+VITE_DEFAULT_TABLE_NAME=profiles
+VITE_DEFAULT_LIMIT=10
 ```
 
 ### Backend (`backend/.env`)
@@ -46,10 +48,29 @@ Example:
 curl "http://localhost:4000/api/table/profiles?limit=5"
 ```
 
+## GitHub 반영 후 main 적용 절차
+
+1. 작업 브랜치 push
+2. GitHub Pull Request 생성
+3. PR에서 코드 리뷰/확인
+4. Merge 후 `main` 최신화
+
 ## CodeSandbox 연결
 
+브랜치를 바로 열 때:
+
+```text
+https://codesandbox.io/p/github/<OWNER>/<REPO>/tree/<BRANCH>
+```
+
+예시:
+
+```text
+https://codesandbox.io/p/github/roische/HoneyDev/tree/cursor/fullstack-codesandbox-849f
+```
+
 1. 이 저장소를 GitHub에 push
-2. CodeSandbox에서 repo 열기
+2. CodeSandbox에서 repo 또는 브랜치 열기
 3. Secrets(환경변수)에 `frontend/.env`, `backend/.env` 값 추가
 4. 서버 실행:
    - 전체 실행: `npm run dev`

@@ -20,7 +20,11 @@ const supabase =
     : null;
 
 app.get("/api/health", (_req, res) => {
-  res.json({ ok: true, service: "backend" });
+  res.json({
+    ok: true,
+    service: "backend",
+    supabaseConfigured: Boolean(supabase),
+  });
 });
 
 app.get("/api/table/:tableName", async (req, res) => {
@@ -32,6 +36,12 @@ app.get("/api/table/:tableName", async (req, res) => {
   }
 
   const tableName = req.params.tableName;
+  if (!/^[a-zA-Z0-9_]+$/.test(tableName)) {
+    return res.status(400).json({
+      error: "Invalid table name. Use letters, numbers, and underscores only.",
+    });
+  }
+
   const limit = Number.parseInt(req.query.limit, 10) || 20;
   const safeLimit = Math.min(Math.max(limit, 1), 100);
 
