@@ -25,6 +25,8 @@ npm run dev
 VITE_API_BASE_URL=http://localhost:4000
 VITE_DEFAULT_TABLE_NAME=profiles
 VITE_DEFAULT_LIMIT=10
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_ANON_KEY=your_anon_public_key
 ```
 
 ### Backend (`backend/.env`)
@@ -40,13 +42,28 @@ SUPABASE_SERVICE_ROLE_KEY=your_secret_or_service_role_key
 ## API Endpoints
 
 - `GET /api/health`
-- `GET /api/table/:tableName?limit=20`
+- `GET /api/table/:tableName?limit=20&offset=0`
+- `POST /api/table/:tableName` with body `{ "row": { ... } }`
+- `PATCH /api/table/:tableName` with body `{ "match": { ... }, "row": { ... } }`
+- `DELETE /api/table/:tableName` with body `{ "match": { ... } }`
 
 Example:
 
 ```bash
 curl "http://localhost:4000/api/table/profiles?limit=5"
 ```
+
+```bash
+curl -X POST "http://localhost:4000/api/table/profiles" \
+  -H "Content-Type: application/json" \
+  -d '{"row":{"name":"demo"}}'
+```
+
+## Frontend 기능
+
+- Supabase 이메일/비밀번호 로그인(Sign In / Sign Out)
+- 테이블 조회(Read)
+- JSON 입력 기반 Create / Update / Delete
 
 ## GitHub 반영 후 main 적용 절차
 
